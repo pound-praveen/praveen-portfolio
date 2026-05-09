@@ -6,412 +6,330 @@
 <title>Praveen Purushothaman — UX Designer</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a08;
-    --surface: #111110;
-    --surface2: #1a1a18;
-    --border: rgba(255,255,255,0.07);
-    --text: #e8e4dc;
-    --muted: #888880;
-    --accent: #c9b97a;
-    --accent2: #7a9cb9;
-    --green: #7ab98a;
-  }
+/* ─── TOKENS ─────────────────────────────────────── */
+:root{
+  --bg:#0a0a08; --surface:#111110; --surface2:#1a1a18;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+  --text:#e8e4dc; --muted:#888880;
+  --gold:#c9b97a; --gold-dim:rgba(201,185,122,0.12);
+  --red:#e03030; --red-dim:rgba(224,48,48,0.12);
+  --blue:#4a90d9; --blue-dim:rgba(74,144,217,0.1);
+  --green:#7ab98a; --green-dim:rgba(122,185,138,0.12);
+  --f1-red:#e8002d; --f1-red-dim:rgba(232,0,45,0.1);
+  --chess-light:#d4b896; --chess-dark:#8b6343;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;line-height:1.7;overflow-x:hidden;}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── NOISE ──────────────────────────────────────── */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:0.35;}
 
-  html { scroll-behavior: smooth; }
+/* ─── CURSOR ─────────────────────────────────────── */
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:transform .15s;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transition:all .25s;opacity:.5;}
+@media(max-width:768px){.cursor,.cursor-ring{display:none;}}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    line-height: 1.7;
-    cursor: none;
-    overflow-x: hidden;
-  }
+/* ─── NAV ────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;backdrop-filter:blur(16px);border-bottom:1px solid var(--border);background:rgba(10,10,8,0.8);}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:15px;letter-spacing:.05em;color:var(--text);text-decoration:none;}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--gold);}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(10,10,8,0.97);z-index:190;flex-direction:column;align-items:center;justify-content:center;gap:40px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:'Syne',sans-serif;font-size:32px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.02em;}
+.mobile-menu a:hover{color:var(--gold);}
 
-  /* Custom cursor */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.15s ease;
-    mix-blend-mode: difference;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.25s ease;
-    opacity: 0.5;
-  }
+/* ─── HERO ───────────────────────────────────────── */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding:120px 48px 80px;gap:48px;align-items:center;position:relative;overflow:hidden;}
 
-  /* Noise overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9000;
-    opacity: 0.4;
-  }
+/* F1 racing line background */
+.hero-racing-lines{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.07;}
+.hero-racing-lines svg{width:100%;height:100%;}
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 48px;
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    background: rgba(10,10,8,0.7);
-  }
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.05em;
-    color: var(--text);
-    text-decoration: none;
-  }
-  .nav-logo span { color: var(--accent); }
-  .nav-links { display: flex; gap: 32px; list-style: none; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--accent); }
+/* Chess board corner decoration */
+.chess-corner{position:absolute;bottom:40px;right:48px;display:grid;grid-template-columns:repeat(4,18px);grid-template-rows:repeat(4,18px);gap:0;opacity:.15;}
+.chess-sq{width:18px;height:18px;}
+.chess-sq.l{background:var(--chess-light);}
+.chess-sq.d{background:var(--chess-dark);}
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 120px 48px 80px;
-    gap: 48px;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::after {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(201,185,122,0.06) 0%, transparent 70%);
-    top: 10%; right: -100px;
-    pointer-events: none;
-  }
-  .hero-eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    width: 32px; height: 1px;
-    background: var(--accent);
-  }
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(56px, 7vw, 96px);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    margin-bottom: 24px;
-  }
-  .hero-name em {
-    font-style: italic;
-    color: var(--accent);
-  }
-  .hero-desc {
-    color: var(--muted);
-    max-width: 400px;
-    line-height: 1.8;
-    margin-bottom: 40px;
-    font-size: 12px;
-  }
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--accent);
-    color: var(--bg);
-    padding: 14px 28px;
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-  .hero-cta:hover { background: var(--text); }
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeUp 0.8s 0.4s forwards;
-  }
-  .stat-card {
-    border: 1px solid var(--border);
-    padding: 24px 28px;
-    background: var(--surface);
-    position: relative;
-    overflow: hidden;
-  }
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--accent);
-  }
-  .stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 48px;
-    font-weight: 300;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .stat-label { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
-  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--gold);}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,6.5vw,88px);font-weight:300;line-height:.95;letter-spacing:-.02em;margin-bottom:24px;}
+.hero-name em{font-style:italic;color:var(--gold);}
+.hero-desc{color:var(--muted);max-width:420px;line-height:1.8;margin-bottom:40px;font-size:12px;}
+.hero-cta-row{display:flex;gap:16px;flex-wrap:wrap;}
+.hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:var(--bg);padding:13px 26px;text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.hero-cta:hover{background:var(--text);}
+.hero-cta.outline{background:transparent;color:var(--gold);border:1px solid var(--gold);}
+.hero-cta.outline:hover{background:var(--gold);color:var(--bg);}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero-left { opacity: 0; animation: fadeUp 0.8s 0.1s forwards; }
+.hero-right{display:flex;flex-direction:column;gap:14px;opacity:0;animation:fadeUp .8s .4s forwards;}
+.stat-card{border:1px solid var(--border);padding:20px 24px;background:var(--surface);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--gold);}
+.stat-card.blue::before{background:var(--blue);}
+.stat-card.green::before{background:var(--green);}
+.stat-card.red-f1::before{background:var(--f1-red);}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--gold);line-height:1;margin-bottom:4px;}
+.stat-label{color:var(--muted);font-size:11px;letter-spacing:.08em;}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
-  /* SECTIONS */
-  section { padding: 80px 48px; }
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 48px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    max-width: 120px;
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 300;
-    line-height: 1.05;
-    margin-bottom: 48px;
-  }
+/* Personal badges */
+.passion-row{display:flex;gap:10px;margin-top:6px;}
+.passion-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);font-size:10px;letter-spacing:.08em;color:var(--muted);}
+.passion-badge svg{width:14px;height:14px;flex-shrink:0;}
+.passion-badge.chess-badge{border-color:rgba(212,184,150,0.3);color:var(--chess-light);}
+.passion-badge.f1-badge{border-color:rgba(232,0,45,0.3);color:var(--f1-red);}
 
-  /* ABOUT */
-  .about { background: var(--surface); border-top: 1px solid var(--border); }
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
-  .about-text { font-size: 14px; line-height: 1.9; color: var(--muted); }
-  .about-text p { margin-bottom: 16px; }
-  .about-text strong { color: var(--text); }
-  .skills-grid { display: flex; flex-direction: column; gap: 12px; }
-  .skill-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-  }
-  .skill-name { color: var(--text); min-width: 160px; font-size: 12px; }
-  .skill-bar {
-    flex: 1;
-    height: 2px;
-    background: var(--border);
-    position: relative;
-  }
-  .skill-fill {
-    position: absolute;
-    top: 0; left: 0; height: 100%;
-    background: var(--accent);
-    transition: width 1.2s ease;
-  }
-  .skill-pct { color: var(--muted); font-size: 10px; min-width: 32px; text-align: right; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.hero-left{opacity:0;animation:fadeUp .8s .1s forwards;}
 
-  /* EXPERIENCE */
-  .experience { border-top: 1px solid var(--border); }
-  .exp-list { display: flex; flex-direction: column; gap: 0; }
-  .exp-item {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 48px;
-    padding: 40px 0;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-  .exp-item:first-child { border-top: 1px solid var(--border); }
-  .exp-meta { }
-  .exp-company {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .exp-role {
-    color: var(--accent);
-    font-size: 11px;
-    letter-spacing: 0.05em;
-    margin-bottom: 6px;
-  }
-  .exp-period { color: var(--muted); font-size: 10px; letter-spacing: 0.08em; }
-  .exp-duration {
-    display: inline-block;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 2px 8px;
-    font-size: 10px;
-    color: var(--accent);
-    margin-top: 8px;
-  }
-  .exp-body { }
-  .exp-tag {
-    display: inline-block;
-    background: rgba(201,185,122,0.08);
-    border: 1px solid rgba(201,185,122,0.2);
-    color: var(--accent);
-    padding: 3px 10px;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-  }
-  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .exp-bullets li {
-    color: var(--muted);
-    font-size: 12px;
-    padding-left: 20px;
-    position: relative;
-    line-height: 1.7;
-  }
-  .exp-bullets li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-  }
+/* ─── SECTION COMMON ─────────────────────────────── */
+section{padding:80px 48px;}
+.section-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:40px;display:flex;align-items:center;gap:16px;}
+.section-label::after{content:'';height:1px;background:var(--border);width:80px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4.5vw,60px);font-weight:300;line-height:1.05;margin-bottom:40px;}
+.section-title em{font-style:italic;color:var(--gold);}
 
-  /* CERT */
-  .cert-card {
-    border: 1px solid var(--border);
-    padding: 32px;
-    background: var(--surface);
-    display: inline-flex;
-    align-items: center;
-    gap: 24px;
-    margin-top: 32px;
-  }
-  .cert-badge {
-    width: 56px; height: 56px;
-    background: linear-gradient(135deg, #1a3a5c, #0a1a2e);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .cert-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-  .cert-issuer { color: var(--muted); font-size: 11px; }
+/* ─── HOBBIES MARQUEE ────────────────────────────── */
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;background:var(--surface);}
+.marquee-track{display:flex;gap:48px;white-space:nowrap;animation:marquee 22s linear infinite;}
+.marquee-item{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);flex-shrink:0;}
+.marquee-item svg{width:16px;height:16px;opacity:.7;}
+.marquee-sep{color:var(--border2);font-size:18px;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}};
 
-  /* CONTACT */
-  .contact {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 100px 48px;
-  }
-  .contact-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(48px, 8vw, 96px);
-    font-weight: 300;
-    line-height: 0.95;
-    margin-bottom: 40px;
-  }
-  .contact-title em { font-style: italic; color: var(--accent); }
-  .contact-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; }
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid var(--border);
-    padding: 14px 24px;
-    color: var(--text);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-  }
-  .contact-link:hover { border-color: var(--accent); color: var(--accent); }
-  .contact-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+/* ─── ABOUT ──────────────────────────────────────── */
+.about{background:var(--surface);border-top:1px solid var(--border);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+.about-text{font-size:13.5px;line-height:1.9;color:var(--muted);}
+.about-text p{margin-bottom:16px;}
+.about-text strong{color:var(--text);}
+.skills-grid{display:flex;flex-direction:column;gap:10px;}
+.skill-row{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--border);}
+.skill-name{color:var(--text);min-width:150px;font-size:11px;}
+.skill-bar{flex:1;height:2px;background:var(--border);position:relative;}
+.skill-fill{position:absolute;top:0;left:0;height:100%;background:var(--gold);transition:width 1.4s ease;}
+.skill-pct{color:var(--muted);font-size:10px;min-width:30px;text-align:right;}
 
-  /* FOOTER */
-  footer {
-    padding: 24px 48px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-  }
+/* Personality cards */
+.personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px;}
+.personality-card{border:1px solid var(--border);padding:18px;background:var(--bg);position:relative;overflow:hidden;}
+.personality-card h4{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;margin-bottom:6px;color:var(--text);}
+.personality-card p{font-size:11px;color:var(--muted);line-height:1.7;}
+.personality-card .card-icon{font-size:24px;margin-bottom:10px;display:block;}
+.personality-card.chess-card{border-color:rgba(212,184,150,0.2);}
+.personality-card.f1-card{border-color:rgba(232,0,45,0.2);}
 
-  /* SCROLL REVEAL */
-  .reveal {
-    opacity: 0;
-    transform: translateY(28px);
-    transition: all 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ─── CHESS BOARD DIVIDER ─────────────────────────── */
+.chess-divider{display:flex;overflow:hidden;height:6px;width:100%;}
+.chess-cell{flex:1;height:6px;}
+.chess-cell:nth-child(odd){background:var(--chess-light);}
+.chess-cell:nth-child(even){background:var(--chess-dark);}
 
-  @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
-    .hero-right { display: none; }
-    section { padding: 60px 24px; }
-    .about-grid { grid-template-columns: 1fr; }
-    .exp-item { grid-template-columns: 1fr; gap: 16px; }
-    footer { flex-direction: column; gap: 8px; text-align: center; }
-  }
+/* ─── EXPERIENCE ─────────────────────────────────── */
+.experience{border-top:1px solid var(--border);}
+.exp-list{display:flex;flex-direction:column;}
+.exp-item{display:grid;grid-template-columns:220px 1fr;gap:48px;padding:36px 0;border-bottom:1px solid var(--border);}
+.exp-item:first-child{border-top:1px solid var(--border);}
+.exp-company{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:6px;}
+.exp-role{color:var(--gold);font-size:11px;letter-spacing:.05em;margin-bottom:5px;}
+.exp-period{color:var(--muted);font-size:10px;letter-spacing:.08em;}
+.exp-duration{display:inline-block;background:var(--surface2);border:1px solid var(--border);padding:2px 8px;font-size:10px;color:var(--gold);margin-top:8px;}
+.exp-duration.current{border-color:rgba(122,185,138,0.3);color:var(--green);}
+.exp-tag{display:inline-block;background:var(--gold-dim);border:1px solid rgba(201,185,122,0.2);color:var(--gold);padding:3px 10px;font-size:10px;letter-spacing:.08em;margin-bottom:14px;}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.exp-bullets li{color:var(--muted);font-size:12px;padding-left:20px;position:relative;line-height:1.7;}
+.exp-bullets li::before{content:'→';position:absolute;left:0;color:var(--gold);}
+
+/* ─── CERT ───────────────────────────────────────── */
+.cert-card{border:1px solid var(--border);padding:28px;background:var(--surface);display:inline-flex;align-items:center;gap:20px;margin-top:32px;}
+.cert-badge{width:52px;height:52px;background:linear-gradient(135deg,#1a3a5c,#0a1a2e);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--blue);flex-shrink:0;border:1px solid rgba(74,144,217,0.3);}
+.cert-name{font-family:'Syne',sans-serif;font-weight:600;font-size:13px;margin-bottom:4px;}
+.cert-issuer{color:var(--muted);font-size:11px;}
+
+/* ─── WORK / CASE STUDY SECTION ──────────────────── */
+.work{background:var(--surface);border-top:1px solid var(--border);}
+.case-card{border:1px solid var(--border);background:var(--bg);overflow:hidden;transition:border-color .3s;}
+.case-card:hover{border-color:var(--gold);}
+.case-card-header{padding:28px 28px 20px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.case-tag{display:inline-flex;align-items:center;gap:6px;background:var(--f1-red);color:#fff;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:4px 12px;margin-bottom:12px;}
+.case-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,3vw,32px);font-weight:300;line-height:1.1;margin-bottom:10px;}
+.case-sub{color:var(--muted);font-size:12px;line-height:1.7;max-width:580px;}
+.case-meta{display:flex;flex-wrap:wrap;gap:20px;padding:20px 28px;border-bottom:1px solid var(--border);}
+.case-meta-item{}
+.case-meta-label{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.case-meta-val{font-size:12px;font-weight:600;color:var(--text);}
+
+/* Funnel stats */
+.funnel-strip{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
+.funnel-col{padding:20px;text-align:center;border-right:1px solid var(--border);}
+.funnel-col:last-child{border-right:none;}
+.funnel-num-big{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--text);line-height:1;}
+.funnel-num-big span{color:var(--f1-red);font-size:18px;}
+.funnel-sub{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px;}
+.funnel-delta{font-size:11px;font-weight:600;color:var(--green);margin-top:3px;}
+.funnel-delta.neutral{color:var(--muted);}
+
+/* Case sections */
+.case-body{padding:28px;}
+.case-section-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
+.case-section-title::before{content:'';width:20px;height:1px;background:var(--gold);}
+.case-eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.case-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2.5vw,26px);font-weight:300;margin-bottom:12px;line-height:1.2;}
+.case-p{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:12px;}
+
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.problem-card{background:var(--surface);border:1px solid var(--border);padding:16px;border-left:3px solid var(--f1-red);}
+.problem-num{font-size:9px;color:var(--f1-red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.problem-head{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.problem-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.ba-card{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.ba-header{padding:8px 14px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;}
+.ba-header.before{background:var(--red-dim);color:var(--red);border-bottom:1px solid rgba(224,48,48,.2);}
+.ba-header.after{background:var(--green-dim);color:var(--green);border-bottom:1px solid rgba(122,185,138,.2);}
+.ba-body{padding:14px;}
+.ba-point{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--muted);margin-bottom:7px;line-height:1.5;}
+.ba-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.ba-dot.red{background:var(--red);}
+.ba-dot.green{background:var(--green);}
+
+/* Pincode mockup dark */
+.pincode-mockup{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:12px 14px;margin-bottom:12px;}
+.pincode-label-dm{font-size:10px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em;}
+.pincode-row-dm{display:flex;align-items:center;gap:8px;}
+.pincode-input-dm{border:1.5px solid var(--border2);border-radius:4px;padding:7px 10px;font-size:13px;font-family:'DM Mono',monospace;width:110px;color:var(--text);background:var(--bg);}
+.pincode-input-dm.err{border-color:var(--red);background:var(--red-dim);}
+.pincode-input-dm.ok{border-color:var(--green);background:var(--green-dim);color:var(--green);}
+.pincode-btn-dm{padding:7px 12px;background:var(--blue);color:#fff;border:none;border-radius:4px;font-size:12px;cursor:default;font-family:'DM Mono',monospace;}
+.pincode-btn-dm.chg{background:transparent;border:1.5px solid var(--blue);color:var(--blue);}
+.delivery-row-dm{font-size:11px;color:var(--muted);margin-top:7px;display:flex;align-items:center;gap:6px;}
+.delivery-dot-dm{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.free-badge-dm{background:var(--green-dim);color:var(--green);font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;}
+.err-msg-dm{font-size:11px;color:var(--red);margin-top:4px;}
+
+/* Solution grid */
+.sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.sol-card{background:var(--surface);border:1px solid var(--border);padding:16px;border-radius:8px;}
+.sol-icon{width:30px;height:30px;background:var(--green-dim);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.sol-icon svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.sol-head{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.sol-desc{font-size:11px;color:var(--muted);line-height:1.6;}
+
+/* Impact bars */
+.impact-bar-list{margin-top:16px;}
+.impact-metric{display:grid;grid-template-columns:140px 1fr 48px;align-items:center;gap:10px;margin-bottom:14px;}
+.impact-label-dm{font-size:11px;color:var(--muted);}
+.bar-track-dm{height:28px;background:var(--surface2);overflow:hidden;border:1px solid var(--border);}
+.bar-fill-dm{height:100%;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:500;color:#fff;white-space:nowrap;}
+.impact-delta-dm{font-size:11px;font-weight:600;color:var(--green);text-align:right;}
+
+/* City bars */
+.city-list{margin-top:16px;display:flex;flex-direction:column;gap:14px;}
+.city-row-dm{}
+.city-label-dm{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;}
+.city-label-dm .city-name{color:var(--text);}
+.city-label-dm .city-stat{font-size:10px;}
+.city-label-dm .up{color:var(--green);}
+.city-label-dm .dn{color:var(--red);}
+.city-label-dm .neutral{color:var(--muted);}
+.city-track-dm{height:6px;background:var(--surface2);margin-bottom:2px;}
+.city-fill-a{height:6px;background:var(--blue);}
+.city-fill-b{height:6px;background:rgba(74,144,217,0.3);}
+
+/* Next steps */
+.next-card-dm{background:var(--surface);border:1px solid rgba(201,185,122,0.2);border-radius:8px;padding:20px;margin-top:16px;}
+.next-head-dm{font-size:12px;font-weight:700;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.next-body-dm{font-size:11px;color:var(--muted);line-height:1.7;}
+
+/* Case divider */
+.case-divider{height:1px;background:var(--border);margin:28px 0;}
+
+/* Expand toggle */
+.expand-btn{display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;padding:10px 18px;cursor:pointer;transition:all .2s;margin:0 28px 28px;}
+.expand-btn:hover{border-color:var(--gold);color:var(--gold);}
+.expand-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;transition:transform .3s;}
+.expand-btn.open svg{transform:rotate(180deg);}
+.expandable{display:none;}
+.expandable.open{display:block;}
+
+/* Tag row */
+.tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.tag{font-size:10px;letter-spacing:.06em;padding:4px 10px;border:1px solid var(--border);color:var(--muted);}
+
+/* ─── F1 STRIP ───────────────────────────────────── */
+.f1-strip{background:var(--f1-red);padding:2px 0;overflow:hidden;}
+.f1-strip-track{display:flex;gap:40px;white-space:nowrap;animation:marquee 18s linear infinite;}
+.f1-strip-item{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,0.7);flex-shrink:0;display:flex;align-items:center;gap:8px;}
+
+/* ─── CONTACT ────────────────────────────────────── */
+.contact{background:var(--surface);border-top:1px solid var(--border);padding:100px 48px;text-align:center;}
+.contact-title{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,88px);font-weight:300;line-height:.95;margin-bottom:40px;}
+.contact-title em{font-style:italic;color:var(--gold);}
+.contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.contact-link{display:flex;align-items:center;gap:10px;border:1px solid var(--border);padding:12px 22px;color:var(--text);text-decoration:none;font-size:12px;letter-spacing:.05em;transition:all .2s;}
+.contact-link:hover{border-color:var(--gold);color:var(--gold);}
+.contact-link svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;}
+
+/* ─── FOOTER ─────────────────────────────────────── */
+footer{padding:20px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:10px;letter-spacing:.1em;flex-wrap:wrap;gap:8px;}
+
+/* ─── CHESS KNIGHT SVG ───────────────────────────── */
+.chess-float{position:absolute;right:60px;top:50%;transform:translateY(-50%);opacity:.04;pointer-events:none;}
+.f1-float{position:absolute;left:48px;bottom:60px;opacity:.04;pointer-events:none;}
+
+/* ─── REVEAL ─────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:all .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ─────────────────────────────────────────────────── */
+/* MOBILE                                              */
+/* ─────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:100px 24px 60px;gap:40px;}
+  .hero-right{display:none;}
+  .stat-row{grid-template-columns:1fr 1fr;}
+  section{padding:56px 24px;}
+  nav{padding:16px 24px;}
+  .hamburger{display:flex;}
+  .nav-links{display:none;}
+  .about-grid{grid-template-columns:1fr;gap:40px;}
+  .exp-item{grid-template-columns:1fr;gap:14px;}
+  .funnel-strip{grid-template-columns:1fr 1fr;}
+  .funnel-col{border-right:none;border-bottom:1px solid var(--border);}
+  .funnel-col:nth-child(odd){border-right:1px solid var(--border);}
+  .funnel-col:last-child{border-bottom:none;}
+  .funnel-col:nth-child(3){border-bottom:none;}
+  .problem-grid{grid-template-columns:1fr;}
+  .ba-grid{grid-template-columns:1fr;}
+  .sol-grid{grid-template-columns:1fr;}
+  .impact-metric{grid-template-columns:100px 1fr 38px;}
+  .personality-grid{grid-template-columns:1fr;}
+  .case-meta{gap:14px;}
+  .case-header-inner{flex-direction:column;}
+  .expand-btn{margin:0 16px 16px;}
+  .case-body{padding:16px;}
+  footer{flex-direction:column;text-align:center;}
+  .chess-corner{display:none;}
+  .contact{padding:72px 24px;}
+}
+@media(max-width:480px){
+  .hero-name{font-size:clamp(40px,10vw,56px);}
+  .section-title{font-size:clamp(30px,8vw,44px);}
+  .impact-metric{grid-template-columns:80px 1fr 34px;}
+  .impact-label-dm{font-size:10px;}
+  .funnel-strip{grid-template-columns:1fr 1fr;}
+  .passion-row{flex-wrap:wrap;}
+}
 </style>
 </head>
 <body>
@@ -419,45 +337,158 @@
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="closeMobile()">Home</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#experience" onclick="closeMobile()">Experience</a>
+  <a href="#work" onclick="closeMobile()">Work</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+</div>
+
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">PP<span>.</span></a>
+  <a href="#home" class="nav-logo">PP<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#experience">Experience</a></li>
+    <li><a href="#work">Work</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
+
+  <!-- F1 Racing Lines BG -->
+  <div class="hero-racing-lines">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M-100 600 Q200 500 400 350 Q600 200 900 300 Q1100 380 1300 200" stroke="#e8002d" stroke-width="3"/>
+      <path d="M-100 620 Q200 520 400 370 Q600 220 900 320 Q1100 400 1300 220" stroke="#e8002d" stroke-width="1.5"/>
+      <path d="M-100 640 Q200 540 400 390 Q600 240 900 340 Q1100 420 1300 240" stroke="#c9b97a" stroke-width="1"/>
+      <circle cx="400" cy="350" r="8" fill="#e8002d"/>
+      <circle cx="900" cy="300" r="8" fill="#e8002d"/>
+      <path d="M0 680 Q300 600 500 430 Q700 260 1000 360 Q1150 430 1300 280" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <!-- Chess board corner -->
+  <div class="chess-corner" id="chessCorner"></div>
+
   <div class="hero-left">
-    <p class="hero-eyebrow">Mumbai, India · Available for opportunities</p>
+    <p class="hero-eyebrow">Mumbai, India · Sr. Product Designer</p>
     <h1 class="hero-name">Praveen<br><em>Purushothaman</em></h1>
     <p class="hero-desc">Senior UX & Product Designer crafting human-centred digital experiences — from healthcare systems to retail platforms. IBM-certified in Enterprise Design Thinking.</p>
-    <a href="#contact" class="hero-cta">Get in Touch →</a>
+    <div class="passion-row">
+      <span class="passion-badge chess-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 16l-2 4h12l-2-4M12 4c-1.1 0-2 .9-2 2v2H8l1 3h6l1-3h-2V6c0-1.1-.9-2-2-2z"/><path d="M9 12l3 2 3-2"/></svg>
+        Chess Enthusiast
+      </span>
+      <span class="passion-badge f1-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M5 8l2-4h10l2 4M5 16l2 4h10l2-4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+        F1 Fan
+      </span>
+    </div>
+    <br>
+    <div class="hero-cta-row">
+      <a href="#work" class="hero-cta">View Case Study →</a>
+      <a href="#contact" class="hero-cta outline">Get in Touch</a>
+    </div>
   </div>
+
   <div class="hero-right">
     <div class="stat-row">
       <div class="stat-card">
         <div class="stat-num">8+</div>
-        <div class="stat-label">Years of Experience</div>
+        <div class="stat-label">Years Experience</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-num">4</div>
-        <div class="stat-label">Companies</div>
+      <div class="stat-card green">
+        <div class="stat-num" style="color:var(--green)">56%</div>
+        <div class="stat-label">Cart Lift (Nilkamal)</div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num" style="font-size:32px; color: var(--accent2);">Health Tech</div>
-      <div class="stat-label">Hospital & Veterinary Information Systems</div>
+    <div class="stat-card blue">
+      <div class="stat-num" style="font-size:28px;color:var(--blue)">Health Tech</div>
+      <div class="stat-label">Hospital & Veterinary Systems (Bosleo)</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-num" style="font-size:32px; color: var(--green);">IBM</div>
-      <div class="stat-label">Enterprise Design Thinking Practitioner</div>
+    <div class="stat-card red-f1" style="display:flex;align-items:center;gap:16px;padding:16px 24px;">
+      <!-- Mini F1 car SVG -->
+      <svg width="52" height="28" viewBox="0 0 52 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <rect x="8" y="10" width="32" height="10" rx="5" fill="#e8002d"/>
+        <rect x="14" y="7" width="18" height="6" rx="3" fill="#c00020"/>
+        <circle cx="12" cy="22" r="5" fill="#222" stroke="#555" stroke-width="1.5"/>
+        <circle cx="40" cy="22" r="5" fill="#222" stroke="#555" stroke-width="1.5"/>
+        <circle cx="12" cy="22" r="2" fill="#444"/>
+        <circle cx="40" cy="22" r="2" fill="#444"/>
+        <rect x="0" y="15" width="8" height="3" rx="1.5" fill="#e8002d" opacity=".6"/>
+        <rect x="44" y="15" width="8" height="3" rx="1.5" fill="#e8002d" opacity=".6"/>
+        <rect x="22" y="5" width="8" height="2" rx="1" fill="#c9b97a"/>
+      </svg>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:2px;">F1 Enthusiast</div>
+        <div class="stat-label">Strategy · Speed · Precision</div>
+      </div>
+    </div>
+    <div class="stat-card" style="display:flex;align-items:center;gap:16px;padding:16px 24px;border-color:rgba(212,184,150,0.25);">
+      <!-- Mini Chess Board -->
+      <div style="display:grid;grid-template-columns:repeat(4,12px);gap:0;flex-shrink:0;">
+        <div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div>
+        <div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div>
+        <div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div>
+        <div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div><div style="width:12px;height:12px;background:var(--chess-dark)"></div><div style="width:12px;height:12px;background:var(--chess-light)"></div>
+      </div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;margin-bottom:2px;">Chess Player</div>
+        <div class="stat-label">Pattern · Patience · Planning</div>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- MARQUEE: SKILLS + PASSIONS -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee">
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg> UX Design</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg> Product Design</span>
+    <span class="marquee-sep">·</span>
+    <!-- Chess Knight Unicode piece -->
+    <span class="marquee-item" style="color:var(--chess-light)">♞ Chess</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> A/B Testing</span>
+    <span class="marquee-sep">·</span>
+    <!-- F1 flag -->
+    <span class="marquee-item" style="color:var(--f1-red)">🏎 Formula 1</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> User Research</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item">♛ Strategic Thinking</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg> Health Tech</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Conversion Optimisation</span>
+    <span class="marquee-sep">·</span>
+    <!-- Duplicate for infinite scroll -->
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg> UX Design</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg> Product Design</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item" style="color:var(--chess-light)">♞ Chess</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> A/B Testing</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item" style="color:var(--f1-red)">🏎 Formula 1</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> User Research</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item">♛ Strategic Thinking</span>
+    <span class="marquee-sep">·</span>
+    <span class="marquee-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Conversion Optimisation</span>
+  </div>
+</div>
 
 <!-- ABOUT -->
 <section class="about" id="about">
@@ -466,48 +497,59 @@
     <div>
       <h2 class="section-title reveal">Designing with<br><em>empathy &amp; intent</em></h2>
       <div class="about-text reveal">
-        <p>I'm a <strong>Senior UX & Product Designer</strong> based in Mumbai with over 8 years of experience spanning UX design, product design, graphic design, and creative direction.</p>
-        <p>My work sits at the intersection of <strong>user research, information architecture, and visual craft</strong> — creating products that are as intuitive as they are beautiful.</p>
-        <p>Currently at <strong>Nilkamal Ltd.</strong>, I oversee UX for retail stores, run A/B tests, conduct heat-map audits, and drive data-informed design improvements across the brand's digital touchpoints.</p>
+        <p>I'm a <strong>Senior UX & Product Designer</strong> based in Mumbai with 8+ years of experience spanning UX design, product design, graphic design, and creative direction.</p>
+        <p>My work sits at the intersection of <strong>user research, information architecture, and visual craft</strong> — creating products that are intuitive, evidence-based, and impactful.</p>
+        <p>Currently at <strong>Nilkamal Ltd.</strong>, I oversee UX for retail stores, run A/B tests, conduct heat-map audits, and drive data-informed design improvements — most recently achieving a <strong>56% lift in add-to-cart</strong> events through a targeted pincode usability intervention.</p>
+      </div>
+
+      <!-- Personality cards -->
+      <div class="personality-grid reveal" style="margin-top:28px;">
+        <div class="personality-card chess-card">
+          <span class="card-icon">♞</span>
+          <h4>Chess Thinker</h4>
+          <p>Chess teaches you to read the board before making a move — the same patience I bring to UX: map the full system before touching the interface.</p>
+        </div>
+        <div class="personality-card f1-card">
+          <span class="card-icon">🏁</span>
+          <h4>F1 Strategist</h4>
+          <p>F1 is 10% car, 90% strategy. Same with design — the best solution usually isn't the flashiest one, it's the one optimised for the real conditions.</p>
+        </div>
       </div>
     </div>
     <div class="reveal">
-      <p class="section-label" style="margin-bottom:24px;">Core Skills</p>
+      <p class="section-label" style="margin-bottom:20px;">Core Skills</p>
       <div class="skills-grid">
-        <div class="skill-row">
-          <span class="skill-name">User Research</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div>
-          <span class="skill-pct">92%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">UX/UI Design</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
-          <span class="skill-pct">95%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Prototyping</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
-          <span class="skill-pct">90%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">A/B Testing</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
-          <span class="skill-pct">85%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Info. Architecture</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div>
-          <span class="skill-pct">88%</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Visual Design</span>
-          <div class="skill-bar"><div class="skill-fill" style="width:93%"></div></div>
-          <span class="skill-pct">93%</span>
-        </div>
+        <div class="skill-row"><span class="skill-name">UX / UI Design</span><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div><span class="skill-pct">95%</span></div>
+        <div class="skill-row"><span class="skill-name">User Research</span><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div><span class="skill-pct">92%</span></div>
+        <div class="skill-row"><span class="skill-name">Prototyping</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div><span class="skill-pct">90%</span></div>
+        <div class="skill-row"><span class="skill-name">Info. Architecture</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div><span class="skill-pct">88%</span></div>
+        <div class="skill-row"><span class="skill-name">A/B Testing</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-row"><span class="skill-name">Visual Design</span><div class="skill-bar"><div class="skill-fill" style="width:93%"></div></div><span class="skill-pct">93%</span></div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- CHESS DIVIDER -->
+<div class="chess-divider" id="chessDivider"></div>
+
+<!-- F1 RED STRIP -->
+<div class="f1-strip">
+  <div class="f1-strip-track">
+    <span class="f1-strip-item">🏎 F1 Inspired Strategy</span>
+    <span class="f1-strip-item">♞ Chess-level Precision</span>
+    <span class="f1-strip-item">◼ Data-driven Design</span>
+    <span class="f1-strip-item">🏎 56% Cart Lift</span>
+    <span class="f1-strip-item">♞ IBM Certified</span>
+    <span class="f1-strip-item">◼ Health Tech Expert</span>
+    <span class="f1-strip-item">🏎 F1 Inspired Strategy</span>
+    <span class="f1-strip-item">♞ Chess-level Precision</span>
+    <span class="f1-strip-item">◼ Data-driven Design</span>
+    <span class="f1-strip-item">🏎 56% Cart Lift</span>
+    <span class="f1-strip-item">♞ IBM Certified</span>
+    <span class="f1-strip-item">◼ Health Tech Expert</span>
+  </div>
+</div>
 
 <!-- EXPERIENCE -->
 <section class="experience" id="experience">
@@ -515,26 +557,24 @@
   <h2 class="section-title reveal">Where I've<br><em>contributed</em></h2>
 
   <div class="exp-list">
-
     <!-- Nilkamal -->
     <div class="exp-item reveal">
       <div class="exp-meta">
         <div class="exp-company">Nilkamal Ltd.</div>
         <div class="exp-role">Sr. Product Designer</div>
         <div class="exp-period">June 2022 — Present</div>
-        <div class="exp-duration">3 yrs 10 mos</div>
+        <div class="exp-duration current">3 yrs 10 mos</div>
       </div>
       <div class="exp-body">
         <span class="exp-tag">Retail · E-Commerce · UX</span>
         <ul class="exp-bullets">
-          <li>Maintaining and looking after UX of Stores under the Nilkamal Umbrella.</li>
-          <li>Auditing and analysing the scope of improvement through heat-maps and surveys on the live site, identifying friction points and converting insights into actionable design solutions.</li>
-          <li>Running A/B and Multi-Variant tests based on hypothetical solutions, then making data-driven corrections to improve conversion and usability metrics.</li>
+          <li>Maintaining and overseeing UX of Stores under the Nilkamal Umbrella.</li>
+          <li>Auditing and analysing scope of improvement through heat-maps and surveys on the live site, converting insights into design solutions.</li>
+          <li>Running A/B and Multi-Variant tests based on hypothetical solutions, then making data-driven corrections — achieving a 56% lift in add-to-cart events.</li>
         </ul>
       </div>
     </div>
-
-    <!-- Bosleo - Sr UX -->
+    <!-- Bosleo -->
     <div class="exp-item reveal">
       <div class="exp-meta">
         <div class="exp-company">Bosleo Tech.</div>
@@ -545,13 +585,12 @@
       <div class="exp-body">
         <span class="exp-tag">Health Tech · SaaS · B2B</span>
         <ul class="exp-bullets">
-          <li>Designed products with a user-centric methodology — from user research and user flows to information architecture and interactive prototypes.</li>
-          <li>Led UX for Hospital Information Systems (Alyssa) and Veterinary Practice Management Systems (AcuroVet & AcuroPet), designing complex workflows for healthcare professionals.</li>
-          <li>Promoted from UX Designer to Senior UX Designer for consistently delivering research-backed, high-quality design solutions.</li>
+          <li>Designed products with user-centric methodology — from user research, user flows, and information architecture through to prototypes.</li>
+          <li>Led UX for Hospital Information Systems (Alyssa) and Veterinary Practice Management Systems (AcuroVet & AcuroPet).</li>
+          <li>Promoted from UX Designer to Senior UX Designer for consistently delivering research-backed design solutions.</li>
         </ul>
       </div>
     </div>
-
     <!-- AGP World -->
     <div class="exp-item reveal">
       <div class="exp-meta">
@@ -563,13 +602,11 @@
       <div class="exp-body">
         <span class="exp-tag">Creative · Events · Brand</span>
         <ul class="exp-bullets">
-          <li>Managed end-to-end creative production: set designs, venue layouts, brochures, invites, posters, outdoor campaigns, web design, and social media creatives.</li>
-          <li>Supervised still and video shoots and produced pitch presentations for In-Film Association and Co-Branding partnerships with clients.</li>
-          <li>Helped create initial wireframes and UI for a pet-based consumer-facing product, marking the beginning of my formal UX journey.</li>
+          <li>Managed end-to-end creative production: set designs, venue layouts, brochures, posters, outdoor campaigns, web design, and SMM creatives.</li>
+          <li>Helped create initial wireframes and UI for a pet-based consumer-facing product.</li>
         </ul>
       </div>
     </div>
-
     <!-- Just About Sportz -->
     <div class="exp-item reveal">
       <div class="exp-meta">
@@ -581,16 +618,15 @@
       <div class="exp-body">
         <span class="exp-tag">Graphic Design · Brand · Print</span>
         <ul class="exp-bullets">
-          <li>Created sample creatives — Print Ads, Banner Ads, TVCs, Packaging & Merchandising designs — helping clients understand In-Film Association and Co-Branding opportunities.</li>
+          <li>Created sample creatives — Print Ads, Banner Ads, TVCs, Packaging & Merchandising — helping clients understand Co-Branding opportunities with films.</li>
         </ul>
       </div>
     </div>
-
   </div>
 
-  <!-- Certification -->
-  <div class="reveal" style="margin-top: 48px;">
-    <p class="section-label" style="margin-bottom: 0;">Certification</p>
+  <!-- Cert -->
+  <div class="reveal" style="margin-top:40px;">
+    <p class="section-label" style="margin-bottom:0;">Certification</p>
     <div class="cert-card">
       <div class="cert-badge">IBM</div>
       <div>
@@ -601,11 +637,189 @@
   </div>
 </section>
 
+<!-- CHESS DIVIDER -->
+<div class="chess-divider"></div>
+
+<!-- WORK / CASE STUDY -->
+<section class="work" id="work">
+  <p class="section-label">03 — Selected Work</p>
+  <h2 class="section-title reveal">Case <em>studies</em></h2>
+
+  <!-- CASE STUDY CARD -->
+  <div class="case-card reveal">
+    <div class="case-card-header">
+      <div>
+        <div class="case-tag">Case Study &nbsp;·&nbsp; Nilkamal Furniture</div>
+        <h3 class="case-title">Pincode Usability<br>Enhancement</h3>
+        <p class="case-sub">A targeted UX intervention on the pincode validation flow that removed friction from the first step of the checkout funnel — resulting in a 56% increase in add-to-cart events within 30 days of launch.</p>
+      </div>
+    </div>
+
+    <!-- Meta -->
+    <div class="case-meta">
+      <div class="case-meta-item"><div class="case-meta-label">Role</div><div class="case-meta-val">Sr. Product Designer → Asst. Design Manager</div></div>
+      <div class="case-meta-item"><div class="case-meta-label">Platform</div><div class="case-meta-val">Nilkamal Furniture (Web)</div></div>
+      <div class="case-meta-item"><div class="case-meta-label">Launched</div><div class="case-meta-val">27 Nov 2025</div></div>
+      <div class="case-meta-item"><div class="case-meta-label">Type</div><div class="case-meta-val">Usability · Conversion Optimisation</div></div>
+    </div>
+
+    <!-- Funnel numbers -->
+    <div class="funnel-strip">
+      <div class="funnel-col">
+        <div class="funnel-num-big">956<span>K</span></div>
+        <div class="funnel-sub">Sessions</div>
+        <div class="funnel-delta neutral">↘ −4% (stable)</div>
+      </div>
+      <div class="funnel-col">
+        <div class="funnel-num-big">44<span>K</span></div>
+        <div class="funnel-sub">Added to Cart</div>
+        <div class="funnel-delta">↑ 56%</div>
+      </div>
+      <div class="funnel-col">
+        <div class="funnel-num-big">24<span>K</span></div>
+        <div class="funnel-sub">Reached Checkout</div>
+        <div class="funnel-delta">↑ 36%</div>
+      </div>
+      <div class="funnel-col">
+        <div class="funnel-num-big">4.2<span>K</span></div>
+        <div class="funnel-sub">Completed Checkout</div>
+        <div class="funnel-delta">↑ 12%</div>
+      </div>
+    </div>
+
+    <!-- Expand toggle -->
+    <button class="expand-btn" id="expandBtn" onclick="toggleExpand()">
+      <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      Read full case study
+    </button>
+
+    <!-- Expandable body -->
+    <div class="expandable" id="expandable">
+      <div class="case-body">
+
+        <!-- Context -->
+        <div class="case-eyebrow">Context</div>
+        <h4 class="case-h2">The pincode problem</h4>
+        <p class="case-p">Nilkamal Furniture delivers to 19,000 of approximately 22,000 pincodes across India — covering 87% of serviceable locations. Yet every user, regardless of whether their pincode was serviceable, was required to manually enter and validate it before they could add any product to their cart.</p>
+        <p class="case-p">This mandatory gate — placed right at the top of the checkout funnel — created significant friction for the vast majority of users who were already in a serviceable zone. The system was built to catch the 13% edge case, but it was penalising the 87% majority every single session.</p>
+
+        <div class="problem-grid">
+          <div class="problem-card"><div class="problem-num">Friction 01</div><div class="problem-head">No input limit enforcement</div><div class="problem-desc">The pincode field accepted more than 6 digits with no validation cap, causing the API to fire on invalid inputs and returning confusing results.</div></div>
+          <div class="problem-card"><div class="problem-num">Friction 02</div><div class="problem-head">Premature API calls</div><div class="problem-desc">The serviceability check triggered on every keystroke, including inputs beyond 6 digits — wasting API calls and degrading the experience.</div></div>
+          <div class="problem-card"><div class="problem-num">Friction 03</div><div class="problem-head">Error hidden on mobile</div><div class="problem-desc">When users tapped "Add to Cart" without entering a pincode, the error message rendered off-screen on mobile devices — invisible, with no scroll nudge.</div></div>
+          <div class="problem-card"><div class="problem-num">Friction 04</div><div class="problem-head">Unclear delivery information</div><div class="problem-desc">Delivery details were vague — no specific delivery date, no free-delivery callout — reducing user confidence and increasing pre-checkout drop-off.</div></div>
+        </div>
+
+        <div class="case-divider"></div>
+
+        <!-- Before After -->
+        <div class="case-eyebrow">Before & After</div>
+        <h4 class="case-h2">The interaction, redesigned</h4>
+        <p class="case-p">The core change was shifting from a friction-first model (user must act before the system helps) to an assistance-first model (the system pre-fills what it knows, and steps aside).</p>
+
+        <div class="ba-grid">
+          <div class="ba-card">
+            <div class="ba-header before">Before — friction at every step</div>
+            <div class="ba-body">
+              <div class="pincode-mockup">
+                <div class="pincode-label-dm">Pincode</div>
+                <div class="pincode-row-dm">
+                  <input class="pincode-input-dm err" value="6860179" readonly>
+                  <button class="pincode-btn-dm">Check</button>
+                </div>
+                <div class="err-msg-dm">Please enter a valid 6-digit pincode</div>
+              </div>
+              <div class="ba-point"><span class="ba-dot red"></span>No input limit — 7+ digits accepted silently</div>
+              <div class="ba-point"><span class="ba-dot red"></span>API fires on invalid inputs</div>
+              <div class="ba-point"><span class="ba-dot red"></span>User must manually delete & retype to correct</div>
+              <div class="ba-point"><span class="ba-dot red"></span>No default pincode — every user starts from zero</div>
+            </div>
+          </div>
+          <div class="ba-card">
+            <div class="ba-header after">After — assistance first</div>
+            <div class="ba-body">
+              <div class="pincode-mockup">
+                <div class="pincode-label-dm">Pincode</div>
+                <div class="pincode-row-dm">
+                  <input class="pincode-input-dm ok" value="400028" readonly>
+                  <button class="pincode-btn-dm chg">Change</button>
+                </div>
+                <div class="delivery-row-dm"><span class="delivery-dot-dm"></span>Delivery by Thursday, 9 Jan &nbsp;<span class="free-badge-dm">FREE</span></div>
+              </div>
+              <div class="ba-point"><span class="ba-dot green"></span>Default pincode 400028 (Mumbai) pre-filled</div>
+              <div class="ba-point"><span class="ba-dot green"></span>API auto-triggers on 6th digit — no button needed</div>
+              <div class="ba-point"><span class="ba-dot green"></span>Clicking the field selects all text instantly</div>
+              <div class="ba-point"><span class="ba-dot green"></span>Specific delivery date shown with free delivery badge</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-divider"></div>
+
+        <!-- Solution -->
+        <div class="case-eyebrow">Solution</div>
+        <h4 class="case-h2">Four changes, one clear goal</h4>
+        <p class="case-p">Each solution mapped directly to a friction point identified during usability testing. The approach was minimal intervention with maximum funnel impact.</p>
+        <div class="sol-grid">
+          <div class="sol-card"><div class="sol-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="sol-head">Auto-trigger on 6 digits</div><div class="sol-desc">The serviceability API fires automatically once the 6th digit is entered — eliminating the need for a separate "Check" button tap.</div></div>
+          <div class="sol-card"><div class="sol-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><div class="sol-head">Default pincode: 400028</div><div class="sol-desc">Pre-filling Mumbai's central pincode reduces the funnel's first step from a required action to an optional correction.</div></div>
+          <div class="sol-card"><div class="sol-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div class="sol-head">Clearer delivery details</div><div class="sol-desc">Delivery information now shows the specific day and date, with a prominent "Free Delivery" badge wherever applicable.</div></div>
+          <div class="sol-card"><div class="sol-icon"><svg viewBox="0 0 24 24"><path d="M4 12h16M4 6h16M4 18h7"/></svg></div><div class="sol-head">Select-all on input focus</div><div class="sol-desc">Tapping the pincode field selects the entire pre-filled value — users can immediately type without manually deleting each digit.</div></div>
+        </div>
+
+        <div class="case-divider"></div>
+
+        <!-- Impact -->
+        <div class="case-eyebrow">Impact</div>
+        <h4 class="case-h2">30 days. Four metrics. All green.</h4>
+        <p class="case-p">Changes rolled out 27 Nov 2025. Comparison: 30-day post-launch window vs prior 30-day baseline.</p>
+        <div class="impact-bar-list">
+          <div class="impact-metric"><div class="impact-label-dm">Add to cart</div><div class="bar-track-dm"><div class="bar-fill-dm" style="width:78%;background:#1D9E75;">28,236 → 44,042</div></div><div class="impact-delta-dm">↑ 56%</div></div>
+          <div class="impact-metric"><div class="impact-label-dm">Reached checkout</div><div class="bar-track-dm"><div class="bar-fill-dm" style="width:58%;background:#1a8bb5;">17,957 → 24,439</div></div><div class="impact-delta-dm">↑ 36%</div></div>
+          <div class="impact-metric"><div class="impact-label-dm">Completed checkout</div><div class="bar-track-dm"><div class="bar-fill-dm" style="width:40%;background:#534AB7;">3,810 → 4,259</div></div><div class="impact-delta-dm">↑ 12%</div></div>
+          <div class="impact-metric"><div class="impact-label-dm">Conversion rate</div><div class="bar-track-dm"><div class="bar-fill-dm" style="width:30%;background:#1D9E75;">0.38% → 0.45%</div></div><div class="impact-delta-dm">↑ 16%</div></div>
+        </div>
+        <p class="case-p" style="margin-top:12px;font-size:11px;color:var(--muted);opacity:.7;">Note: the slight dip in overall sessions (−4%) makes the add-to-cart and conversion gains more significant — converting a meaningfully higher proportion of every visitor.</p>
+
+        <div class="case-divider"></div>
+
+        <!-- Next Steps -->
+        <div class="case-eyebrow">Next Steps</div>
+        <h4 class="case-h2">The Bengaluru hypothesis</h4>
+        <p class="case-p">The default pincode of 400028 (Mumbai) was chosen for the initial rollout as a pragmatic baseline. However, session data reveals a compelling opportunity worth testing.</p>
+        <div class="city-list">
+          <div class="city-row-dm"><div class="city-label-dm"><span class="city-name">Bengaluru</span><span class="up">↑ 9% · 98.1K sessions</span></div><div class="city-track-dm"><div class="city-fill-a" style="width:100%"></div></div><div class="city-track-dm"><div class="city-fill-b" style="width:91%"></div></div></div>
+          <div class="city-row-dm"><div class="city-label-dm"><span class="city-name">India (unclassified)</span><span class="dn">↓ 8% · 86.3K sessions</span></div><div class="city-track-dm"><div class="city-fill-a" style="width:88%"></div></div><div class="city-track-dm"><div class="city-fill-b" style="width:96%"></div></div></div>
+          <div class="city-row-dm"><div class="city-label-dm"><span class="city-name">Mumbai</span><span class="neutral">↘ 0.1% · 81.1K sessions</span></div><div class="city-track-dm"><div class="city-fill-a" style="width:83%"></div></div><div class="city-track-dm"><div class="city-fill-b" style="width:83%"></div></div></div>
+          <div class="city-row-dm"><div class="city-label-dm"><span class="city-name">Hyderabad</span><span class="dn">↓ 3% · 61K sessions</span></div><div class="city-track-dm"><div class="city-fill-a" style="width:62%"></div></div><div class="city-track-dm"><div class="city-fill-b" style="width:64%"></div></div></div>
+          <div class="city-row-dm"><div class="city-label-dm"><span class="city-name">Pune</span><span class="dn">↓ 3% · 56K sessions</span></div><div class="city-track-dm"><div class="city-fill-a" style="width:57%"></div></div><div class="city-track-dm"><div class="city-fill-b" style="width:59%"></div></div></div>
+          <p style="font-size:10px;color:var(--muted);margin-top:6px;">Dark = Nov–Dec 2025 &nbsp;·&nbsp; Light = Oct–Nov 2025</p>
+        </div>
+        <div class="next-card-dm">
+          <div class="next-head-dm">⚑ Proposed experiment</div>
+          <div class="next-body-dm">Bengaluru now holds the highest session volume across all cities and is on an upward trend (+9%), while Mumbai is essentially flat. The hypothesis: switching the default pincode from 400028 (Mumbai) to 560001 (Bengaluru) will further reduce friction for the single largest user cohort. Recommended: A/B test with a 50/50 split across both default pincodes, measured over a 30-day window using the same funnel metrics.</div>
+        </div>
+        <div class="tag-row">
+          <span class="tag">UX Research</span>
+          <span class="tag">Conversion Optimisation</span>
+          <span class="tag">Funnel Analysis</span>
+          <span class="tag">Usability Testing</span>
+          <span class="tag">E-commerce</span>
+          <span class="tag">Data-informed Design</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- end case card -->
+</section>
+
+<!-- CHESS DIVIDER -->
+<div class="chess-divider"></div>
+
 <!-- CONTACT -->
 <section class="contact" id="contact">
-  <p class="section-label" style="justify-content:center; margin-bottom: 24px;">03 — Contact</p>
+  <p class="section-label" style="justify-content:center;margin-bottom:24px;">04 — Contact</p>
   <h2 class="contact-title reveal">Let's <em>connect</em></h2>
-  <p style="color: var(--muted); margin-bottom: 40px; font-size: 13px;" class="reveal">Open to senior UX / Product Design opportunities in Mumbai and beyond.</p>
+  <p style="color:var(--muted);margin-bottom:40px;font-size:13px;" class="reveal">Open to senior UX / Product Design opportunities in Mumbai and beyond.</p>
   <div class="contact-links reveal">
     <a href="mailto:ppraveencreates@gmail.com" class="contact-link">
       <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
@@ -620,37 +834,82 @@
 
 <footer>
   <span>© 2026 Praveen Purushothaman</span>
-  <span>UX Designer · Mumbai, India</span>
+  <span style="display:flex;align-items:center;gap:12px;">
+    <span style="color:var(--chess-light)">♞</span>
+    UX Designer · Mumbai, India
+    <span style="color:var(--f1-red)">🏁</span>
+  </span>
 </footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  function animateCursor() {
-    cursor.style.left = mx - 4 + 'px';
-    cursor.style.top = my - 4 + 'px';
-    rx += (mx - rx) * 0.15;
-    ry += (my - ry) * 0.15;
-    ring.style.left = rx - 18 + 'px';
-    ring.style.top = ry - 18 + 'px';
+/* ── Chess corner fill ── */
+const corner = document.getElementById('chessCorner');
+if(corner){
+  for(let r=0;r<4;r++) for(let c=0;c<4;c++){
+    const sq=document.createElement('div');
+    sq.className='chess-sq '+((r+c)%2===0?'l':'d');
+    corner.appendChild(sq);
+  }
+}
+
+/* ── Chess divider fill ── */
+document.querySelectorAll('.chess-divider').forEach(div=>{
+  for(let i=0;i<80;i++){
+    const c=document.createElement('div');
+    c.className='chess-cell';
+    div.appendChild(c);
+  }
+});
+
+/* ── Custom cursor ── */
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+if(cursor){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  function animateCursor(){
+    cursor.style.left=mx-4+'px'; cursor.style.top=my-4+'px';
+    rx+=(mx-rx)*.15; ry+=(my-ry)*.15;
+    ring.style.left=rx-18+'px'; ring.style.top=ry-18+'px';
     requestAnimationFrame(animateCursor);
   }
   animateCursor();
-
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(3)'; ring.style.transform = 'scale(1.5)'; });
-    el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.transform = 'scale(1)'; });
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(3)';ring.style.transform='scale(1.5)';});
+    el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.transform='scale(1)';});
   });
+}
 
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => io.observe(el));
+/* ── Mobile menu ── */
+function toggleMobile(){
+  const m=document.getElementById('mobileMenu');
+  const h=document.getElementById('hamburger');
+  m.classList.toggle('open');
+  h.classList.toggle('open');
+}
+function closeMobile(){
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+/* ── Scroll reveal ── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ── Case study expand ── */
+function toggleExpand(){
+  const btn=document.getElementById('expandBtn');
+  const exp=document.getElementById('expandable');
+  const isOpen=exp.classList.toggle('open');
+  btn.classList.toggle('open',isOpen);
+  btn.querySelector('span')||0;
+  // update text
+  const textNode=[...btn.childNodes].find(n=>n.nodeType===3);
+  if(textNode) textNode.textContent=isOpen?' Collapse case study ':' Read full case study ';
+  if(isOpen) setTimeout(()=>exp.scrollIntoView({behavior:'smooth',block:'start'}),50);
+}
 </script>
 </body>
 </html>
